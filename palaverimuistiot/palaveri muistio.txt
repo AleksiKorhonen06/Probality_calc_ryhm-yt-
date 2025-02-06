@@ -1,0 +1,11 @@
+Ryhmä 4 palaverimuistio
+
+
+4.2.2025:
+Projektikansion perustus ja siirtäminen Githubiin. Suunniteltiin projektin 	kokonaiskuvaa. Nostettiin esiin toimintoja, joita todennäköisyyslaskurissa 	voisi esiintyä.
+ Luotiin mockup ohjelmaan liittyen. Tehtiin powerpointtiin 	valmis pohja englannin kurssin esitelmää varten. Alkuperäinen 		suunnitelma oli, että projektissa käytettäisiin custom-noppia.
+Päädyimme 	kuitenkin ratkaisuun, ettei se ole tarpeellista. Palaverin kesto 10:30-13:30.
+
+
+6.2.2025
+Esityksen viimeistely. Mukaan lukien sen harjoittelu. Lisättiin työaikaraportti sekä muistio githubiin. 

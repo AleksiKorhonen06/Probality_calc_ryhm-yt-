@@ -8,4 +8,4 @@ Päädyimme 	kuitenkin ratkaisuun, ettei se ole tarpeellista. Palaverin kesto 10
 
 
 6.2.2025
-Esityksen viimeistely. Mukaan lukien sen harjoittelu. Lisättiin työaikaraportti sekä muistio githubiin. 
+Esityksen viimeistely. Mukaan lukien sen harjoittelu. Lisättiin työaikaraportti sekä muistio GitHubiin. Korjattiin myös .gitignore projektiin, sillä siinä ilmeni aiemmin ongelmia. Palaverin kesto 3-tuntia.

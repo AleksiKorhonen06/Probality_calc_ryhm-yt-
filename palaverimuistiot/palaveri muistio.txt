@@ -9,3 +9,9 @@ Päädyimme 	kuitenkin ratkaisuun, ettei se ole tarpeellista. Palaverin kesto 10
 
 6.2.2025
 Esityksen viimeistely. Mukaan lukien sen harjoittelu. Lisättiin työaikaraportti sekä muistio GitHubiin. Korjattiin myös .gitignore projektiin, sillä siinä ilmeni aiemmin ongelmia. Palaverin kesto 3-tuntia.
+
+12.2.2025:
+Luotiin ohjelmalle mockup, sekä sen myötä uml-kaavio. Katseltiin vähän työnjakoa, sekä laitettiin koodi pienesti aluilleen. Etenkin visuaalista näkymää ihan tähän alkuun. Myös json kansioiden tutkailua. Kesto 2-tuntia
+
+14.2.2025:
+Aloiteltiin koodipuolta. Tehtiin työnjako. Lucas ja Niko työstävät backendia, Vertti ja Aleksi työstävät frontendia. Palaverin kesto 1-tunti.

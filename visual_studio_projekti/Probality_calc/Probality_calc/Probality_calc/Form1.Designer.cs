@@ -42,18 +42,13 @@
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox4 = new System.Windows.Forms.CheckBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.Clear = new System.Windows.Forms.Button();
             this.Calculate = new System.Windows.Forms.Button();
             this.button7 = new System.Windows.Forms.Button();
+            this.Setting_Button = new System.Windows.Forms.Button();
+            this.settingsPanel = new System.Windows.Forms.Panel();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // D6
@@ -130,7 +125,7 @@
             this.EventBoard.BackColor = System.Drawing.SystemColors.ControlDark;
             this.EventBoard.Location = new System.Drawing.Point(223, 12);
             this.EventBoard.Name = "EventBoard";
-            this.EventBoard.Size = new System.Drawing.Size(404, 220);
+            this.EventBoard.Size = new System.Drawing.Size(561, 220);
             this.EventBoard.TabIndex = 7;
             // 
             // panel2
@@ -195,69 +190,6 @@
             this.button6.Text = "button6";
             this.button6.UseVisualStyleBackColor = true;
             // 
-            // panel4
-            // 
-            this.panel4.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel4.Controls.Add(this.checkBox5);
-            this.panel4.Controls.Add(this.checkBox4);
-            this.panel4.Controls.Add(this.checkBox3);
-            this.panel4.Controls.Add(this.checkBox2);
-            this.panel4.Controls.Add(this.checkBox1);
-            this.panel4.Location = new System.Drawing.Point(649, 12);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(135, 256);
-            this.panel4.TabIndex = 8;
-            // 
-            // checkBox5
-            // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Location = new System.Drawing.Point(30, 112);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(80, 17);
-            this.checkBox5.TabIndex = 4;
-            this.checkBox5.Text = "checkBox5";
-            this.checkBox5.UseVisualStyleBackColor = true;
-            // 
-            // checkBox4
-            // 
-            this.checkBox4.AutoSize = true;
-            this.checkBox4.Location = new System.Drawing.Point(30, 89);
-            this.checkBox4.Name = "checkBox4";
-            this.checkBox4.Size = new System.Drawing.Size(80, 17);
-            this.checkBox4.TabIndex = 3;
-            this.checkBox4.Text = "checkBox4";
-            this.checkBox4.UseVisualStyleBackColor = true;
-            // 
-            // checkBox3
-            // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Location = new System.Drawing.Point(30, 66);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(80, 17);
-            this.checkBox3.TabIndex = 2;
-            this.checkBox3.Text = "checkBox3";
-            this.checkBox3.UseVisualStyleBackColor = true;
-            // 
-            // checkBox2
-            // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Location = new System.Drawing.Point(30, 43);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(80, 17);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "checkBox2";
-            this.checkBox2.UseVisualStyleBackColor = true;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(30, 20);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(80, 17);
-            this.checkBox1.TabIndex = 0;
-            this.checkBox1.Text = "checkBox1";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
             // Clear
             // 
             this.Clear.Location = new System.Drawing.Point(223, 238);
@@ -287,15 +219,33 @@
             this.button7.Text = "button7";
             this.button7.UseVisualStyleBackColor = true;
             // 
+            // Setting_Button
+            // 
+            this.Setting_Button.Location = new System.Drawing.Point(729, 238);
+            this.Setting_Button.Name = "Setting_Button";
+            this.Setting_Button.Size = new System.Drawing.Size(55, 29);
+            this.Setting_Button.TabIndex = 11;
+            this.Setting_Button.Text = "Settings";
+            this.Setting_Button.UseVisualStyleBackColor = true;
+            this.Setting_Button.Click += new System.EventHandler(this.Setting_Button_Click);
+            // 
+            // settingsPanel
+            // 
+            this.settingsPanel.Location = new System.Drawing.Point(662, 257);
+            this.settingsPanel.Name = "settingsPanel";
+            this.settingsPanel.Size = new System.Drawing.Size(10, 10);
+            this.settingsPanel.TabIndex = 12;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(796, 450);
+            this.Controls.Add(this.settingsPanel);
+            this.Controls.Add(this.Setting_Button);
             this.Controls.Add(this.button7);
             this.Controls.Add(this.Clear);
             this.Controls.Add(this.Calculate);
-            this.Controls.Add(this.panel4);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.EventBoard);
             this.Controls.Add(this.AnsInfo);
@@ -305,8 +255,6 @@
             this.Load += new System.EventHandler(this.Form1_Load);
             this.panel2.ResumeLayout(false);
             this.panel3.ResumeLayout(false);
-            this.panel4.ResumeLayout(false);
-            this.panel4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -327,15 +275,11 @@
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox4;
-        private System.Windows.Forms.CheckBox checkBox3;
-        private System.Windows.Forms.CheckBox checkBox2;
-        private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.Button Clear;
         private System.Windows.Forms.Button Calculate;
         private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button Setting_Button;
+        private System.Windows.Forms.Panel settingsPanel;
     }
 }
 

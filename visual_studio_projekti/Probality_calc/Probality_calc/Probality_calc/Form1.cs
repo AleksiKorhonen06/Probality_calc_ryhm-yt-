@@ -14,6 +14,7 @@ namespace Probality_calc
         public Form1()
         {
             InitializeComponent();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -26,6 +27,8 @@ namespace Probality_calc
             D40.Click += AddInfoBox_Click;
             D60.Click += AddInfoBox_Click;
             Clear.Click += Clear_Click;
+
+            InitializeSettingsPanel();
         }
         private void Coin_Click(object sender, EventArgs e)
         {
@@ -124,6 +127,81 @@ namespace Probality_calc
 
         private void Calculate_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void InitializeSettingsPanel()
+        {
+            settingsPanel = new Panel
+            {
+                Size = new Size(300, 200),
+                BackColor = Color.FromArgb(220, 220, 220), // Light gray
+                BorderStyle = BorderStyle.FixedSingle,
+                Visible = false, // Hide initially
+                Location = new Point((this.Width - 300) / 2, (this.Height - 200) / 2) // Center on form
+            };
+
+            // Placeholder label
+            Label placeholderLabel = new Label
+            {
+                Text = "Settings",
+                AutoSize = true,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                Location = new Point(20, 20)
+            };
+
+            // Apply Button
+            Button applyButton = new Button
+            {
+                Text = "Apply",
+                Size = new Size(80, 30),
+                Location = new Point(50, 150)
+            };
+            applyButton.Click += ApplySettings_Click; // Attach event handler
+
+            // testi Button
+            Button TestButton = new Button
+            {
+                Text = "Juupajuu",
+                Size = new Size(80, 30),
+                Location = new Point(50, 50)
+            };
+            TestButton.Click += TestSettings_Click; // Attach event handler
+
+            // Cancel Button
+            Button cancelButton = new Button
+            {
+                Text = "Cancel",
+                Size = new Size(80, 30),
+                Location = new Point(160, 150)
+            };
+            cancelButton.Click += (s, e) => settingsPanel.Visible = false; // Hide when clicked
+
+            // Add controls to the panel
+            settingsPanel.Controls.Add(placeholderLabel);
+            settingsPanel.Controls.Add(applyButton);
+            settingsPanel.Controls.Add(cancelButton);
+            settingsPanel.Controls.Add(TestButton);
+
+            // Add panel to form
+            this.Controls.Add(settingsPanel);
+        }
+
+        // Apply button click event handler
+        private void ApplySettings_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Settings applied!"); // Placeholder action
+        }
+
+        private void TestSettings_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Asetus vaihdettu testi"); // Placeholder action
+        }
+
+        private void Setting_Button_Click(object sender, EventArgs e)
+        {
+            settingsPanel.Visible = true; // Show settings overlay
+            settingsPanel.BringToFront(); // **Ensure it's on top**
 
         }
     }

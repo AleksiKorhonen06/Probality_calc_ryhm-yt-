@@ -30,33 +30,15 @@ namespace Probality_calc
 
             InitializeSettingsPanel();
         }
-        private void Coin_Click(object sender, EventArgs e)
-        {
 
-        }
-        private void D6_Click(object sender, EventArgs e)
-        {
+        //suurin osa Click functioista on vain sen takia että ilman niitä tulee erroreja
+        private void Coin_Click(object sender, EventArgs e){}
+        private void D6_Click(object sender, EventArgs e) { }
+        private void D12_Click(object sender, EventArgs e) { }
+        private void D21_Click(object sender, EventArgs e) { }
+        private void D40_Click(object sender, EventArgs e) { }
+        private void D60_Click(object sender, EventArgs e) { }
 
-        }
-        private void D12_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void D21_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void D40_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void D60_Click(object sender, EventArgs e)
-        {
-
-        }
 
         private void AddInfoBox_Click(object sender, EventArgs e)
         {

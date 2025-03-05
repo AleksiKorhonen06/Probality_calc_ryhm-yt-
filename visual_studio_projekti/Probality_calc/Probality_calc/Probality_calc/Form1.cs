@@ -14,7 +14,7 @@ namespace Probality_calc
         public Form1()
         {
             InitializeComponent();
-
+            // jsonSerializer
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -119,8 +119,8 @@ namespace Probality_calc
                 Size = new Size(300, 200),
                 BackColor = Color.FromArgb(220, 220, 220), // Light gray
                 BorderStyle = BorderStyle.FixedSingle,
-                Visible = false, // Hide initially
-                Location = new Point((this.Width - 300) / 2, (this.Height - 200) / 2) // Center on form
+                Visible = false, // Settings page is hidden initially on launch
+                Location = new Point((this.Width - 300) / 2, (this.Height - 200) / 2) 
             };
 
             // Placeholder label
@@ -139,7 +139,7 @@ namespace Probality_calc
                 Size = new Size(80, 30),
                 Location = new Point(50, 150)
             };
-            applyButton.Click += ApplySettings_Click; // Attach event handler
+            applyButton.Click += ApplySettings_Click;
 
             // testi Button
             Button TestButton = new Button
@@ -148,7 +148,7 @@ namespace Probality_calc
                 Size = new Size(80, 30),
                 Location = new Point(50, 50)
             };
-            TestButton.Click += TestSettings_Click; // Attach event handler
+            TestButton.Click += TestSettings_Click; 
 
             // Cancel Button
             Button cancelButton = new Button
@@ -157,7 +157,7 @@ namespace Probality_calc
                 Size = new Size(80, 30),
                 Location = new Point(160, 150)
             };
-            cancelButton.Click += (s, e) => settingsPanel.Visible = false; // Hide when clicked
+            cancelButton.Click += (s, e) => settingsPanel.Visible = false; 
 
             // Add controls to the panel
             settingsPanel.Controls.Add(placeholderLabel);
@@ -172,12 +172,12 @@ namespace Probality_calc
         // Apply button click event handler
         private void ApplySettings_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Settings applied!"); // Placeholder action
+            MessageBox.Show("Settings applied!");
         }
 
         private void TestSettings_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Asetus vaihdettu testi"); // Placeholder action
+            MessageBox.Show("Asetus vaihdettu testi");
         }
 
         private void Setting_Button_Click(object sender, EventArgs e)

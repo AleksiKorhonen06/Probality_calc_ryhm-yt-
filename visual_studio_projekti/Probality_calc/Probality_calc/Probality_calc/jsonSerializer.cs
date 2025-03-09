@@ -24,13 +24,13 @@ namespace Probality_calc
             } }
 
 
-        public Dice(string name, int sides, List<int> values)
+        public Dice(string name, int sides)
         {
             Name = name;
             Sides = sides;
-            Values = values;
+            Values = new List<int>();
 
-            for (int i = 1; i <= sides; i++) //Lisää Values listaan --> 1, 2, 3...
+            for (int i = 1; i <= sides; i++)
             {
                 Values.Add(i);
             }
@@ -48,17 +48,15 @@ namespace Probality_calc
         //tällä hetkellä en tiiä miten kannattais lähteä liikkeelle.
         public AddCustomDice()
         {
-            // placeholder, laita calculation methodiin myöhemmin
-            List<Dice> diceList = new List<Dice>()
         {
-            new Dice("D6", 6, new List<int>()),
-            new Dice("D12", 12, new List<int>()),
-            new Dice("D20", 20, new List<int>()),
+            //new Dice("D6", 6, new List<int>()),
+            //new Dice("D12", 12, new List<int>()),
+            //new Dice("D20", 20, new List<int>()),
         };
             //Lasketaan näiden max value:
-            int diceMaxSum = diceList.Sum(e => e.MaxValue); // laskee noppien maksimiarvot yhteen
+            //int diceMaxSum = diceList.Sum(e => e.MaxValue); // laskee noppien maksimiarvot yhteen
             //min value
-            int diceMinSum = diceList.Sum(e => e.MinValue); // laskee noppien minimiarvot yhteen;
+            //int diceMinSum = diceList.Sum(e => e.MinValue); // laskee noppien minimiarvot yhteen;
 
         }
     }

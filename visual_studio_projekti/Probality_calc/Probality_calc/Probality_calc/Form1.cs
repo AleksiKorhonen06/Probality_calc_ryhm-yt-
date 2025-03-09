@@ -32,12 +32,36 @@ namespace Probality_calc
         }
 
         //suurin osa Click functioista on vain sen takia että ilman niitä tulee erroreja
-        private void Coin_Click(object sender, EventArgs e){}
-        private void D6_Click(object sender, EventArgs e) { }
-        private void D12_Click(object sender, EventArgs e) { }
-        private void D21_Click(object sender, EventArgs e) { }
-        private void D40_Click(object sender, EventArgs e) { }
-        private void D60_Click(object sender, EventArgs e) { }
+        private void Coin_Click(object sender, EventArgs e) 
+        {
+            var D2 = new Dice("D2", 2);
+            DiceStorage.diceList.Add(D2);
+        }
+        private void D6_Click(object sender, EventArgs e) 
+        {
+            var D6 = new Dice("D6", 6);
+            DiceStorage.diceList.Add(D6);
+        }
+        private void D12_Click(object sender, EventArgs e) 
+        {
+            var D12 = new Dice("D12", 12);
+            DiceStorage.diceList.Add(D12);
+        }
+        private void D21_Click(object sender, EventArgs e) 
+        {
+            var D21 = new Dice("D21", 21);
+            DiceStorage.diceList.Add(D21);
+        }
+        private void D40_Click(object sender, EventArgs e) 
+        {
+            var D40 = new Dice("D40", 40);
+            DiceStorage.diceList.Add(D40);
+        }
+        private void D60_Click(object sender, EventArgs e) 
+        {
+            var D60 = new Dice("D60", 60);
+            DiceStorage.diceList.Add(D60);
+        }
 
 
         private void AddInfoBox_Click(object sender, EventArgs e)
@@ -83,6 +107,7 @@ namespace Probality_calc
 
         private void Clear_Click(object sender, EventArgs e)
         {
+            DiceStorage.diceList.Clear();
             // Create a list to hold panels to be removed
             List<Control> controlsToRemove = new List<Control>();
 
@@ -109,14 +134,17 @@ namespace Probality_calc
 
         private void Calculate_Click(object sender, EventArgs e)
         {
-
+            // muuttaa paremmaks myöhemmin
+            AnsInfo.Text = $"Your selected dice were: ";
+            AnsInfo.Text = $"The chosen propability calculation was: ";
+            AnsInfo.Text = $"The probability is: ";
         }
 
         private void InitializeSettingsPanel()
         {
             settingsPanel = new Panel
             {
-                Size = new Size(300, 200),
+                Size = new Size(500, 300),
                 BackColor = Color.FromArgb(220, 220, 220), // Light gray
                 BorderStyle = BorderStyle.FixedSingle,
                 Visible = false, // Settings page is hidden initially on launch
@@ -137,25 +165,41 @@ namespace Probality_calc
             {
                 Text = "Apply",
                 Size = new Size(80, 30),
-                Location = new Point(50, 150)
+                Location = new Point(50, 250)
             };
             applyButton.Click += ApplySettings_Click;
 
             // testi Button
-            Button TestButton = new Button
+            Button SameNumButton = new Button
             {
-                Text = "Juupajuu",
-                Size = new Size(80, 30),
+                Text = "P of number(s) in succession",
+                Size = new Size(120, 50),
                 Location = new Point(50, 50)
             };
-            TestButton.Click += TestSettings_Click; 
+            SameNumButton.Click += TestSettings_Click;
+
+            Button SumLessThanButton = new Button
+            {
+                Text = "P of sum less than",
+                Size = new Size(120, 50),
+                Location = new Point(50, 100)
+            };
+            SumLessThanButton.Click += TestSettings_Click;
+
+            Button SumMoreThanButton = new Button
+            {
+                Text = "P of sum more than",
+                Size = new Size(120, 50),
+                Location = new Point(50, 150)
+            };
+            SumMoreThanButton.Click += TestSettings_Click;
 
             // Cancel Button
             Button cancelButton = new Button
             {
                 Text = "Cancel",
                 Size = new Size(80, 30),
-                Location = new Point(160, 150)
+                Location = new Point(160, 250)
             };
             cancelButton.Click += (s, e) => settingsPanel.Visible = false; 
 
@@ -163,7 +207,9 @@ namespace Probality_calc
             settingsPanel.Controls.Add(placeholderLabel);
             settingsPanel.Controls.Add(applyButton);
             settingsPanel.Controls.Add(cancelButton);
-            settingsPanel.Controls.Add(TestButton);
+            settingsPanel.Controls.Add(SameNumButton);
+            settingsPanel.Controls.Add(SumLessThanButton);
+            settingsPanel.Controls.Add(SumMoreThanButton);
 
             // Add panel to form
             this.Controls.Add(settingsPanel);
@@ -178,6 +224,7 @@ namespace Probality_calc
         private void TestSettings_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Asetus vaihdettu testi");
+            
         }
 
         private void Setting_Button_Click(object sender, EventArgs e)

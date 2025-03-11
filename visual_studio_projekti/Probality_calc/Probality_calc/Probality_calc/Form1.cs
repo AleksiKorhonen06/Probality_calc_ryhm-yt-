@@ -13,6 +13,7 @@ namespace Probality_calc
 
         public Form1()
         {
+            LoadedDice.diceList = JsonLoader.ReadFile();
             InitializeComponent();
             // jsonSerializer
         }
@@ -136,7 +137,7 @@ namespace Probality_calc
         {
             // muuttaa paremmaks myöhemmin
             AnsInfo.Text = $"Your selected dice were: ";
-            AnsInfo.Text = $"The chosen propability calculation was: ";
+            AnsInfo.Text = $"The chosen probability calculation was: ";
             AnsInfo.Text = $"The probability is: ";
         }
 

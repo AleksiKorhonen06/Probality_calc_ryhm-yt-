@@ -5,9 +5,49 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 using System.Windows.Forms.VisualStyles;
+using System.Text.Json;
 
 namespace Probality_calc
 {
+    internal static class JsonLoader
+    {
+        private static string filePath = "dice.json"; // nimi voi muuttaa
+        
+        public static List<Dice> ReadFile()
+        {
+            try
+            {
+
+
+                string jsonData = File.ReadAllText(filePath);
+                List<Dice> list = JsonSerializer.Deserialize<List<Dice>>(jsonData);
+                if (list == null || list.Count == 0)
+                {
+                    // uusi json template
+                }
+                return list;
+            }
+            catch
+            {
+                // uusi json template
+                return new List<Dice>();
+            }
+        }
+
+        public static bool SaveData(List<Dice> dice)
+        {
+            try
+            {
+                string JsonOutput = JsonSerializer.Serialize(dice);
+                File.WriteAllText(filePath, JsonOutput);
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+    }
     internal class Dice
     {
         public string Name { get; set; }
@@ -30,9 +70,12 @@ namespace Probality_calc
             Sides = sides;
             Values = new List<int>();
 
-            for (int i = 1; i <= sides; i++)
+            if (Values == null || Values.Count == 0)
             {
-                Values.Add(i);
+                for (int i = 1; i <= sides; i++)
+                {
+                    Values.Add(i);
+                }
             }
         }
     }

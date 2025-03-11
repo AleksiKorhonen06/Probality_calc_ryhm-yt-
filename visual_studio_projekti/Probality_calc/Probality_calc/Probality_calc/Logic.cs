@@ -8,32 +8,35 @@ namespace Probality_calc
 {
     internal class Logic
     {
-        public float SameNumInSuccession(List<int> WantedNums) //WantedNums voi ottaa useamman numeron. Älä sekota WantedNum:iin, joka voi ottaa vaan yhen
+        public float SameNumInSuccession(List<int> WantedNums)
         {
             if (DiceStorage.diceList.Count == 0) return 0f;
 
-            Dictionary<int, int> numCounts = new Dictionary<int, int>();
-
-            foreach (int num in WantedNums)
+            // Step 1: Find numbers that exist in all dice
+            HashSet<int> commonNumbers = new HashSet<int>(WantedNums);
+            foreach (var dice in DiceStorage.diceList)
             {
-                bool isInAllLists = DiceStorage.diceList.All(dice => dice.Values.Contains(num));
-
-                if (isInAllLists)
-                {
-                    int count = DiceStorage.diceList.Sum(dice => dice.Values.Count(v => v == num));
-                    numCounts[num] = count;
-                }
+                commonNumbers.IntersectWith(dice.Values);
             }
 
-            int WantedOutcomes = numCounts.Values.Sum();
-            int TotalOutcomes = DiceStorage.diceList.Sum(dice => dice.Values.Count);
+            if (commonNumbers.Count == 0) return 0f; // No common numbers
+
+            // Step 2: Count occurrences per die, ensuring we track each roll separately
+            int WantedOutcomes = 0;
+            int TotalOutcomes = 1;
+
+            foreach (var dice in DiceStorage.diceList)
+            {
+                int countInDice = dice.Values.Count(v => commonNumbers.Contains(v));
+                WantedOutcomes += countInDice;
+                TotalOutcomes *= dice.Values.Count; // Each die contributes to the total possibilities
+            }
 
             if (TotalOutcomes == 0) return 0f;
 
-            float P = (float)WantedOutcomes / TotalOutcomes;
-            return P * 100; // %
+            return ((float)WantedOutcomes / TotalOutcomes) * 100;
         }
-        
+
         public float SumLessThan(int WantedNum)
         {
             if (DiceStorage.diceList.Count == 0) return 0f;

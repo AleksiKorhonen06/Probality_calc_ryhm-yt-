@@ -238,10 +238,10 @@ namespace Probality_calc
 
         private void Calculate_Click(object sender, EventArgs e)
         {
-            // muuttaa paremmaks myöhemmin
-            AnsInfo.Text = $"Your selected dice were: ";
-            AnsInfo.Text = $"The chosen probability calculation was: ";
-            AnsInfo.Text = $"The probability is: ";
+            Logic logic = new Logic();
+            //List<int> testi = new List<int>() {1,2};
+            AnsInfo.Text += logic.SumLessThan(90).ToString();
+            //AnsInfo.Text += logic.SameNumInSuccession(testi);
         }
 
 

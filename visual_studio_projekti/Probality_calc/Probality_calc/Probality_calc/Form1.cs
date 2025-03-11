@@ -21,15 +21,15 @@ namespace Probality_calc
         private void Form1_Load(object sender, EventArgs e)
         {
             // Attach event handler to buttons
-            Coin.Click += AddInfoBox_Click;
+            D4.Click += AddInfoBox_Click;
             D6.Click += AddInfoBox_Click;
+            D8.Click += AddInfoBox_Click;
+            D10.Click += AddInfoBox_Click;
             D12.Click += AddInfoBox_Click;
-            D21.Click += AddInfoBox_Click;
-            D40.Click += AddInfoBox_Click;
-            D60.Click += AddInfoBox_Click;
+            D20.Click += AddInfoBox_Click;
             Clear.Click += Clear_Click;
 
-            InitializeSettingsPanel();
+
         }
 
         //suurin osa Click functioista on vain sen takia että ilman niitä tulee erroreja
@@ -70,41 +70,141 @@ namespace Probality_calc
             Button clickedButton = sender as Button;
             if (clickedButton == null) return;
 
-            // Create a new Info Box (Panel)
+            // Create the panel (infoBox)
             Panel infoBox = new Panel
             {
-                Size = new Size(150, 50),
-                BackColor = Color.LightGray,
+                Size = new Size(clickedButton.Width, clickedButton.Height + 20),
+                BackColor = Color.White,
                 BorderStyle = BorderStyle.FixedSingle
             };
 
-            // Create a Label inside the Panel
-            Label infoLabel = new Label
+            Button infoButton = new Button
             {
-                Text = $"Event: {clickedButton.Name}",
-                AutoSize = true,
-                Location = new Point(10, 10)
+                Size = clickedButton.Size,
+                BackgroundImage = clickedButton.BackgroundImage,
+                BackgroundImageLayout = clickedButton.BackgroundImageLayout,
+                FlatStyle = FlatStyle.Flat,
+                BackColor = Color.Transparent,
+                Font = new Font("Arial", 10, FontStyle.Bold),
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.BottomCenter,
+                FlatAppearance = { BorderSize = 0 }
             };
 
-            infoBox.Controls.Add(infoLabel);
+            // Create the label below the button
+            Label nameLabel = new Label
+            {
+                Text = clickedButton.Name,
+                ForeColor = Color.White,
+                TextAlign = ContentAlignment.MiddleCenter,
+                BackColor = Color.FromArgb(150, 0, 0, 0),
+                Size = new Size(infoBox.Width, 20),
+                Location = new Point(0, infoButton.Height)
+            };
 
-            // Check if the next panel will exceed the EventBoard width
+            // Add the Button and Label to the Panel
+            infoBox.Controls.Add(infoButton);
+            infoBox.Controls.Add(nameLabel);
+
+            // Set the Button's location at the top of the panel
+            infoButton.Location = new Point(0, 0);
+
+            // Move to the next row if the panel exceeds EventBoard width
             if (panelOffsetX + infoBox.Width > EventBoard.Width)
             {
-                // Move to the next row if it exceeds the width
-                panelOffsetX = 10; // Reset to the start of the new row
-                panelOffsetY += infoBox.Height + spaceBetweenPanels; // Move down by the height of the panel plus space
+                panelOffsetX = 10;
+                panelOffsetY += infoBox.Height + spaceBetweenPanels;
             }
 
-            // Set the panel's location
             infoBox.Location = new Point(panelOffsetX, panelOffsetY);
-
-            // Add the new panel to the EventBoard
             EventBoard.Controls.Add(infoBox);
 
-            // Update panelOffsetX for the next panel (move to the right)
-            panelOffsetX += infoBox.Width + spaceBetweenPanels; // Add space between panels horizontally
+            // Update panelOffsetX for the next panel
+            panelOffsetX += infoBox.Width + spaceBetweenPanels;
+
+            // Attach the click event handler to the button inside the infoBox
+            infoButton.Click += (s, args) => OpenSettingsForm(clickedButton.Name);
         }
+
+        private static readonly Dictionary<string, int> DiceSides = new Dictionary<string, int>
+{
+    { "D4", 4 },
+    { "D6", 6 },
+    { "D8", 8 },
+    { "D10", 10 },
+    { "D12", 12 },
+    { "D20", 20 },
+};
+
+        private void OpenSettingsForm(string diceName)
+        {
+            if (!DiceSides.ContainsKey(diceName)) return;
+            int numberOfSides = DiceSides[diceName];
+
+            Form settingsForm = new Form
+            {
+                Text = $"{diceName} Settings",
+                Size = new Size(500, 300),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false
+            };
+
+            Panel settingsPanel = new Panel
+            {
+                Size = new Size(500, 300),
+                BackColor = Color.FromArgb(220, 220, 220),
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            AddSettingsLabel(settingsPanel, diceName);
+
+            AddCheckboxesForDice(settingsPanel, numberOfSides);
+
+            settingsForm.Controls.Add(settingsPanel);
+            settingsForm.ShowDialog();
+        }
+
+        private void AddSettingsLabel(Panel settingsPanel, string diceName)
+        {
+            Label settingsLabel = new Label
+            {
+                Text = $"Settings for {diceName}",
+                AutoSize = true,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                Location = new Point(20, 20)
+            };
+            settingsPanel.Controls.Add(settingsLabel);
+        }
+
+        private void AddCheckboxesForDice(Panel settingsPanel, int numberOfSides)
+        {
+            int maxColumns = 5; // Number of checkboxes per row before wrapping
+            int spacingX = 90; 
+            int spacingY = 30; 
+            int startX = 20; 
+            int startY = 50; 
+
+            for (int i = 0; i < numberOfSides; i++)
+            {
+                int col = i % maxColumns; // Determines the column number
+                int row = i / maxColumns; // Determines the row number
+
+                CheckBox checkBox = new CheckBox
+                {
+                    Text = $"Side {i + 1}",
+                    Location = new Point(startX + (col * spacingX), startY + (row * spacingY)),
+                    AutoSize = true
+                };
+                settingsPanel.Controls.Add(checkBox);
+            }
+        }
+
+
+
+
+
 
         private void Clear_Click(object sender, EventArgs e)
         {
@@ -133,6 +233,9 @@ namespace Probality_calc
             panelOffsetY = 10;
         }
 
+
+
+
         private void Calculate_Click(object sender, EventArgs e)
         {
             // muuttaa paremmaks myöhemmin
@@ -141,18 +244,27 @@ namespace Probality_calc
             AnsInfo.Text = $"The probability is: ";
         }
 
-        private void InitializeSettingsPanel()
+
+
+        private void OpenSettingsForm()
         {
-            settingsPanel = new Panel
+            Form settingsForm = new Form
             {
+                Text = "Settings",
                 Size = new Size(500, 300),
-                BackColor = Color.FromArgb(220, 220, 220), // Light gray
-                BorderStyle = BorderStyle.FixedSingle,
-                Visible = false, // Settings page is hidden initially on launch
-                Location = new Point((this.Width - 300) / 2, (this.Height - 200) / 2) 
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false
             };
 
-            // Placeholder label
+            Panel settingsPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(220, 220, 220), // Light gray
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
             Label placeholderLabel = new Label
             {
                 Text = "Settings",
@@ -161,59 +273,60 @@ namespace Probality_calc
                 Location = new Point(20, 20)
             };
 
-            // Apply Button
             Button applyButton = new Button
             {
                 Text = "Apply",
                 Size = new Size(80, 30),
-                Location = new Point(50, 250)
+                Location = new Point(300, 220)
             };
             applyButton.Click += ApplySettings_Click;
 
-            // testi Button
-            Button SameNumButton = new Button
+            Button cancelButton = new Button
+            {
+                Text = "Cancel",
+                Size = new Size(80, 30),
+                Location = new Point(380, 220)
+            };
+            cancelButton.Click += (s, e) => settingsForm.Close();
+
+
+            Button sameNumButton = new Button
             {
                 Text = "P of number(s) in succession",
                 Size = new Size(120, 50),
                 Location = new Point(50, 50)
             };
-            SameNumButton.Click += TestSettings_Click;
+            sameNumButton.Click += TestSettings_Click;
 
-            Button SumLessThanButton = new Button
+            Button sumLessThanButton = new Button
             {
                 Text = "P of sum less than",
                 Size = new Size(120, 50),
                 Location = new Point(50, 100)
             };
-            SumLessThanButton.Click += TestSettings_Click;
+            sumLessThanButton.Click += TestSettings_Click;
 
-            Button SumMoreThanButton = new Button
+            Button sumMoreThanButton = new Button
             {
                 Text = "P of sum more than",
                 Size = new Size(120, 50),
                 Location = new Point(50, 150)
             };
-            SumMoreThanButton.Click += TestSettings_Click;
+            sumMoreThanButton.Click += TestSettings_Click;
 
-            // Cancel Button
-            Button cancelButton = new Button
-            {
-                Text = "Cancel",
-                Size = new Size(80, 30),
-                Location = new Point(160, 250)
-            };
-            cancelButton.Click += (s, e) => settingsPanel.Visible = false; 
+
 
             // Add controls to the panel
             settingsPanel.Controls.Add(placeholderLabel);
             settingsPanel.Controls.Add(applyButton);
             settingsPanel.Controls.Add(cancelButton);
-            settingsPanel.Controls.Add(SameNumButton);
-            settingsPanel.Controls.Add(SumLessThanButton);
-            settingsPanel.Controls.Add(SumMoreThanButton);
+            settingsPanel.Controls.Add(sameNumButton);
+            settingsPanel.Controls.Add(sumLessThanButton);
+            settingsPanel.Controls.Add(sumMoreThanButton);
 
-            // Add panel to form
-            this.Controls.Add(settingsPanel);
+            settingsForm.Controls.Add(settingsPanel);
+
+            settingsForm.ShowDialog(); // Opens as a modal window
         }
 
         // Apply button click event handler
@@ -230,9 +343,8 @@ namespace Probality_calc
 
         private void Setting_Button_Click(object sender, EventArgs e)
         {
-            settingsPanel.Visible = true; // Show settings overlay
-            settingsPanel.BringToFront(); // **Ensure it's on top**
-
+            OpenSettingsForm(); // This will open the settings in a new window
         }
+
     }
 }

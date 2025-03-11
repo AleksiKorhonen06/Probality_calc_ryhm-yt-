@@ -32,6 +32,12 @@
             this.AnsInfo = new System.Windows.Forms.Label();
             this.EventBoard = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.D10 = new System.Windows.Forms.Button();
+            this.D6 = new System.Windows.Forms.Button();
+            this.D20 = new System.Windows.Forms.Button();
+            this.D4 = new System.Windows.Forms.Button();
+            this.D12 = new System.Windows.Forms.Button();
+            this.D8 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
@@ -39,15 +45,9 @@
             this.button6 = new System.Windows.Forms.Button();
             this.Clear = new System.Windows.Forms.Button();
             this.Calculate = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
+            this.Roll = new System.Windows.Forms.Button();
             this.Setting_Button = new System.Windows.Forms.Button();
             this.settingsPanel = new System.Windows.Forms.Panel();
-            this.D10 = new System.Windows.Forms.Button();
-            this.D6 = new System.Windows.Forms.Button();
-            this.D20 = new System.Windows.Forms.Button();
-            this.D4 = new System.Windows.Forms.Button();
-            this.D12 = new System.Windows.Forms.Button();
-            this.D8 = new System.Windows.Forms.Button();
             this.panel2.SuspendLayout();
             this.panel3.SuspendLayout();
             this.SuspendLayout();
@@ -82,6 +82,72 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(181, 256);
             this.panel2.TabIndex = 8;
+            // 
+            // D10
+            // 
+            this.D10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("D10.BackgroundImage")));
+            this.D10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.D10.Location = new System.Drawing.Point(93, 72);
+            this.D10.Name = "D10";
+            this.D10.Size = new System.Drawing.Size(75, 59);
+            this.D10.TabIndex = 2;
+            this.D10.UseVisualStyleBackColor = true;
+            this.D10.Click += new System.EventHandler(this.D21_Click);
+            // 
+            // D6
+            // 
+            this.D6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("D6.BackgroundImage")));
+            this.D6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.D6.Location = new System.Drawing.Point(93, 7);
+            this.D6.Name = "D6";
+            this.D6.Size = new System.Drawing.Size(75, 59);
+            this.D6.TabIndex = 0;
+            this.D6.UseVisualStyleBackColor = true;
+            this.D6.Click += new System.EventHandler(this.D6_Click);
+            // 
+            // D20
+            // 
+            this.D20.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("D20.BackgroundImage")));
+            this.D20.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.D20.Location = new System.Drawing.Point(93, 137);
+            this.D20.Name = "D20";
+            this.D20.Size = new System.Drawing.Size(75, 59);
+            this.D20.TabIndex = 5;
+            this.D20.UseVisualStyleBackColor = true;
+            this.D20.Click += new System.EventHandler(this.D60_Click);
+            // 
+            // D4
+            // 
+            this.D4.BackgroundImage = global::Probality_calc.Properties.Resources.D4;
+            this.D4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.D4.Location = new System.Drawing.Point(12, 7);
+            this.D4.Name = "D4";
+            this.D4.Size = new System.Drawing.Size(75, 59);
+            this.D4.TabIndex = 1;
+            this.D4.UseVisualStyleBackColor = true;
+            this.D4.Click += new System.EventHandler(this.Coin_Click);
+            // 
+            // D12
+            // 
+            this.D12.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("D12.BackgroundImage")));
+            this.D12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.D12.Location = new System.Drawing.Point(12, 137);
+            this.D12.Name = "D12";
+            this.D12.Size = new System.Drawing.Size(75, 59);
+            this.D12.TabIndex = 4;
+            this.D12.UseVisualStyleBackColor = true;
+            this.D12.Click += new System.EventHandler(this.D40_Click);
+            // 
+            // D8
+            // 
+            this.D8.BackgroundImage = global::Probality_calc.Properties.Resources.D8;
+            this.D8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
+            this.D8.Location = new System.Drawing.Point(12, 72);
+            this.D8.Name = "D8";
+            this.D8.Size = new System.Drawing.Size(75, 59);
+            this.D8.TabIndex = 3;
+            this.D8.UseVisualStyleBackColor = true;
+            this.D8.Click += new System.EventHandler(this.D12_Click);
             // 
             // panel3
             // 
@@ -151,14 +217,15 @@
             this.Calculate.UseVisualStyleBackColor = true;
             this.Calculate.Click += new System.EventHandler(this.Calculate_Click);
             // 
-            // button7
+            // Roll
             // 
-            this.button7.Location = new System.Drawing.Point(405, 238);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 30);
-            this.button7.TabIndex = 10;
-            this.button7.Text = "Roll";
-            this.button7.UseVisualStyleBackColor = true;
+            this.Roll.Location = new System.Drawing.Point(405, 238);
+            this.Roll.Name = "Roll";
+            this.Roll.Size = new System.Drawing.Size(75, 30);
+            this.Roll.TabIndex = 10;
+            this.Roll.Text = "Roll";
+            this.Roll.UseVisualStyleBackColor = true;
+            this.Roll.Click += new System.EventHandler(this.Roll_Click);
             // 
             // Setting_Button
             // 
@@ -177,72 +244,6 @@
             this.settingsPanel.Size = new System.Drawing.Size(10, 10);
             this.settingsPanel.TabIndex = 12;
             // 
-            // D10
-            // 
-            this.D10.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("D10.BackgroundImage")));
-            this.D10.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.D10.Location = new System.Drawing.Point(93, 72);
-            this.D10.Name = "D10";
-            this.D10.Size = new System.Drawing.Size(75, 59);
-            this.D10.TabIndex = 2;
-            this.D10.UseVisualStyleBackColor = true;
-            this.D10.Click += new System.EventHandler(this.D21_Click);
-            // 
-            // D6
-            // 
-            this.D6.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("D6.BackgroundImage")));
-            this.D6.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.D6.Location = new System.Drawing.Point(93, 7);
-            this.D6.Name = "D6";
-            this.D6.Size = new System.Drawing.Size(75, 59);
-            this.D6.TabIndex = 0;
-            this.D6.UseVisualStyleBackColor = true;
-            this.D6.Click += new System.EventHandler(this.D6_Click);
-            // 
-            // D20
-            // 
-            this.D20.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("D20.BackgroundImage")));
-            this.D20.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.D20.Location = new System.Drawing.Point(93, 137);
-            this.D20.Name = "D20";
-            this.D20.Size = new System.Drawing.Size(75, 59);
-            this.D20.TabIndex = 5;
-            this.D20.UseVisualStyleBackColor = true;
-            this.D20.Click += new System.EventHandler(this.D60_Click);
-            // 
-            // D4
-            // 
-            this.D4.BackgroundImage = global::Probality_calc.Properties.Resources.D4;
-            this.D4.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.D4.Location = new System.Drawing.Point(12, 7);
-            this.D4.Name = "D4";
-            this.D4.Size = new System.Drawing.Size(75, 59);
-            this.D4.TabIndex = 1;
-            this.D4.UseVisualStyleBackColor = true;
-            this.D4.Click += new System.EventHandler(this.Coin_Click);
-            // 
-            // D12
-            // 
-            this.D12.BackgroundImage = ((System.Drawing.Image)(resources.GetObject("D12.BackgroundImage")));
-            this.D12.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.D12.Location = new System.Drawing.Point(12, 137);
-            this.D12.Name = "D12";
-            this.D12.Size = new System.Drawing.Size(75, 59);
-            this.D12.TabIndex = 4;
-            this.D12.UseVisualStyleBackColor = true;
-            this.D12.Click += new System.EventHandler(this.D40_Click);
-            // 
-            // D8
-            // 
-            this.D8.BackgroundImage = global::Probality_calc.Properties.Resources.D8;
-            this.D8.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Zoom;
-            this.D8.Location = new System.Drawing.Point(12, 72);
-            this.D8.Name = "D8";
-            this.D8.Size = new System.Drawing.Size(75, 59);
-            this.D8.TabIndex = 3;
-            this.D8.UseVisualStyleBackColor = true;
-            this.D8.Click += new System.EventHandler(this.D12_Click);
-            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -250,7 +251,7 @@
             this.ClientSize = new System.Drawing.Size(796, 450);
             this.Controls.Add(this.settingsPanel);
             this.Controls.Add(this.Setting_Button);
-            this.Controls.Add(this.button7);
+            this.Controls.Add(this.Roll);
             this.Controls.Add(this.Clear);
             this.Controls.Add(this.Calculate);
             this.Controls.Add(this.panel3);
@@ -284,7 +285,7 @@
         private System.Windows.Forms.Button button6;
         private System.Windows.Forms.Button Clear;
         private System.Windows.Forms.Button Calculate;
-        private System.Windows.Forms.Button button7;
+        private System.Windows.Forms.Button Roll;
         private System.Windows.Forms.Button Setting_Button;
         private System.Windows.Forms.Panel settingsPanel;
     }

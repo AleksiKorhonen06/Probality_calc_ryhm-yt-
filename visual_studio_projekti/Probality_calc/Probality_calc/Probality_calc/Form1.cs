@@ -35,8 +35,8 @@ namespace Probality_calc
         //suurin osa Click functioista on vain sen takia että ilman niitä tulee erroreja
         private void Coin_Click(object sender, EventArgs e) 
         {
-            var D2 = new Dice("D2", 2);
-            DiceStorage.diceList.Add(D2);
+            var D4 = new Dice("D4", 4);
+            DiceStorage.diceList.Add(D4);
         }
         private void D6_Click(object sender, EventArgs e) 
         {
@@ -45,23 +45,23 @@ namespace Probality_calc
         }
         private void D12_Click(object sender, EventArgs e) 
         {
-            var D12 = new Dice("D12", 12);
-            DiceStorage.diceList.Add(D12);
+            var D8 = new Dice("D8", 8);
+            DiceStorage.diceList.Add(D8);
         }
         private void D21_Click(object sender, EventArgs e) 
         {
-            var D21 = new Dice("D21", 21);
-            DiceStorage.diceList.Add(D21);
+            var D10 = new Dice("D10", 10);
+            DiceStorage.diceList.Add(D10);
         }
         private void D40_Click(object sender, EventArgs e) 
         {
-            var D40 = new Dice("D40", 40);
-            DiceStorage.diceList.Add(D40);
+            var D12 = new Dice("D12", 12);
+            DiceStorage.diceList.Add(D12);
         }
         private void D60_Click(object sender, EventArgs e) 
         {
-            var D60 = new Dice("D60", 60);
-            DiceStorage.diceList.Add(D60);
+            var D20 = new Dice("D20", 20);
+            DiceStorage.diceList.Add(D20);
         }
 
 
@@ -346,5 +346,11 @@ namespace Probality_calc
             OpenSettingsForm(); // This will open the settings in a new window
         }
 
+        private void Roll_Click(object sender, EventArgs e)
+        {
+            RollDice rollDice = new RollDice();
+            var testi = rollDice.RollMoreThan().ToString();
+            AnsInfo.Text += testi;
+        }
     }
 }

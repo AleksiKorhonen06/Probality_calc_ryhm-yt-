@@ -2,6 +2,12 @@
 using System.Windows.Forms;
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text.Json.Serialization;
+using System.Text.Json;
+using Newtonsoft.Json;
+using System.Reflection;
+
 
 namespace Probality_calc
 {
@@ -15,54 +21,23 @@ namespace Probality_calc
         {
             LoadedDice.diceList = JsonLoader.ReadFile();
             InitializeComponent();
-            // jsonSerializer
+            InitializeObservableButtons();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            InitializeObservableButtons();
+
             // Attach event handler to buttons
-            D4.Click += AddInfoBox_Click;
-            D6.Click += AddInfoBox_Click;
-            D8.Click += AddInfoBox_Click;
-            D10.Click += AddInfoBox_Click;
-            D12.Click += AddInfoBox_Click;
-            D20.Click += AddInfoBox_Click;
+
             Clear.Click += Clear_Click;
 
 
         }
 
-        //suurin osa Click functioista on vain sen takia että ilman niitä tulee erroreja
-        private void Coin_Click(object sender, EventArgs e) 
-        {
-            var D4 = new Dice("D4", 4);
-            DiceStorage.diceList.Add(D4);
-        }
-        private void D6_Click(object sender, EventArgs e) 
-        {
-            var D6 = new Dice("D6", 6);
-            DiceStorage.diceList.Add(D6);
-        }
-        private void D12_Click(object sender, EventArgs e) 
-        {
-            var D8 = new Dice("D8", 8);
-            DiceStorage.diceList.Add(D8);
-        }
-        private void D21_Click(object sender, EventArgs e) 
-        {
-            var D10 = new Dice("D10", 10);
-            DiceStorage.diceList.Add(D10);
-        }
-        private void D40_Click(object sender, EventArgs e) 
-        {
-            var D12 = new Dice("D12", 12);
-            DiceStorage.diceList.Add(D12);
-        }
-        private void D60_Click(object sender, EventArgs e) 
-        {
-            var D20 = new Dice("D20", 20);
-            DiceStorage.diceList.Add(D20);
-        }
+
+
 
 
         private void AddInfoBox_Click(object sender, EventArgs e)
@@ -124,7 +99,13 @@ namespace Probality_calc
 
             // Attach the click event handler to the button inside the infoBox
             infoButton.Click += (s, args) => OpenSettingsForm(clickedButton.Name);
+            infoBox.Controls.Add(infoButton);
+            infoBox.Controls.Add(nameLabel);
+            infoButton.BringToFront();  // Ensure the button is clickable
+
         }
+
+
 
         private static readonly Dictionary<string, int> DiceSides = new Dictionary<string, int>
 {
@@ -136,11 +117,13 @@ namespace Probality_calc
     { "D20", 20 },
 };
 
+
         private void OpenSettingsForm(string diceName)
         {
-            if (!DiceSides.ContainsKey(diceName)) return;
+
             int numberOfSides = DiceSides[diceName];
 
+            // Create the settings form
             Form settingsForm = new Form
             {
                 Text = $"{diceName} Settings",
@@ -151,6 +134,7 @@ namespace Probality_calc
                 MinimizeBox = false
             };
 
+            // Create a settings panel
             Panel settingsPanel = new Panel
             {
                 Size = new Size(500, 300),
@@ -158,13 +142,18 @@ namespace Probality_calc
                 BorderStyle = BorderStyle.FixedSingle
             };
 
+            // Add a label at the top of the settings panel
             AddSettingsLabel(settingsPanel, diceName);
 
+            // Add checkboxes for each side of the dice
             AddCheckboxesForDice(settingsPanel, numberOfSides);
 
+            // Add the panel to the settings form and show it
             settingsForm.Controls.Add(settingsPanel);
             settingsForm.ShowDialog();
         }
+
+
 
         private void AddSettingsLabel(Panel settingsPanel, string diceName)
         {
@@ -178,19 +167,21 @@ namespace Probality_calc
             settingsPanel.Controls.Add(settingsLabel);
         }
 
+
         private void AddCheckboxesForDice(Panel settingsPanel, int numberOfSides)
         {
-            int maxColumns = 5; // Number of checkboxes per row before wrapping
-            int spacingX = 90; 
-            int spacingY = 30; 
-            int startX = 20; 
-            int startY = 50; 
+            int maxColumns = 5;  // Number of checkboxes per row before wrapping
+            int spacingX = 90;
+            int spacingY = 30;
+            int startX = 20;
+            int startY = 50;
 
             for (int i = 0; i < numberOfSides; i++)
             {
                 int col = i % maxColumns; // Determines the column number
                 int row = i / maxColumns; // Determines the row number
 
+                // Create a checkbox for each side
                 CheckBox checkBox = new CheckBox
                 {
                     Text = $"Side {i + 1}",
@@ -200,6 +191,7 @@ namespace Probality_calc
                 settingsPanel.Controls.Add(checkBox);
             }
         }
+
 
 
 
@@ -352,5 +344,154 @@ namespace Probality_calc
             var testi = rollDice.RollMoreThan().ToString();
             AnsInfo.Text += testi;
         }
-    }
+
+
+
+        private Dictionary<string, ObservableButton> observableButtons = new Dictionary<string, ObservableButton>();
+
+
+        public class ObservableButton
+        {
+            public event EventHandler Clicked;  // Correct event type
+
+            public string Name { get; }
+
+            public ObservableButton(string name)
+            {
+                Name = name;
+            }
+
+            public void Click(object sender, EventArgs e)
+            {
+                Clicked?.Invoke(sender, e);  // Pass both parameters
+            }
+        }
+
+        public class Dice
+        {
+            public string Name { get; set; }
+            public int Sides { get; set; }
+
+            public Dice(string name, int sides)
+            {
+                Name = name;
+                Sides = sides;
+            }
+        }
+
+        public class LoadedDice
+        {
+            public static List<Dice> diceList { get; set; }
+        }
+
+
+        public class DiceList
+        {
+            public List<Dice> Dice { get; set; }
+        }
+
+        public class JsonLoader
+        {
+            public static List<Dice> ReadFile()
+            {
+                // Assuming the JSON file is in the same directory as the executable
+                string filePath = Path.Combine(Application.StartupPath, "Dice.json");
+
+                // Read the JSON file content
+                string json = File.ReadAllText("../../Dice.json");
+
+                // Deserialize the JSON to the DiceList object
+                var diceList = JsonConvert.DeserializeObject<DiceList>(json);
+
+                // Return the list of dice
+                return diceList.Dice;  // Access the Dice list from DiceList class
+            }
+        }
+
+        private void DiceButton_Click(object sender, EventArgs e)
+        {
+            Button clickedButton = sender as Button;
+            if (clickedButton == null) return;
+
+            // Get the Dice object from the Tag property
+            Dice selectedDice = clickedButton.Tag as Dice;
+            if (selectedDice != null)
+            {
+                MessageBox.Show($"You selected {selectedDice.Name} with {selectedDice.Sides} sides.");
+            }
+        }
+
+
+
+
+        private void InitializeObservableButtons()
+        {
+            dicePanel.Controls.Clear(); // Clear any existing buttons
+
+            int startX = 10, startY = 10, buttonSpacing = 80;
+
+            foreach (var dice in LoadedDice.diceList)  // Assuming LoadedDice.diceList is your list of dice
+            {
+                // Load the corresponding image for the dice
+                Image diceImage = LoadDiceImage(dice.Name);
+
+                // Create the actual UI button
+                Button button = new Button
+                {
+                    Text = dice.Name.ToUpper(),  // Set the button text to the dice name in uppercase
+                    Name = dice.Name,  // Set the button's name to the dice's name
+                    Size = new Size(60, 60),  // Set a standard size for the button
+                    Location = new Point(startX, startY),  // Set button location
+                    Font = new Font("Arial", 10, FontStyle.Bold),  // Set font style
+                    BackColor = Color.LightGray,  // Set background color
+                    BackgroundImage = diceImage,  // Set the image as the background
+                    BackgroundImageLayout = ImageLayout.Stretch  // Stretch the image to fit the button size
+                };
+
+                // Attach the click event to trigger AddInfoBox_Click when the button is clicked
+                button.Click += AddInfoBox_Click;
+
+                // Add the button to the dicePanel
+                dicePanel.Controls.Add(button);
+
+                // Update the button placement for the next button
+                startX += buttonSpacing;
+                if (startX > dicePanel.Width - 100)  // If the button exceeds panel width, move to the next row
+                {
+                    startX = 10;
+                    startY += buttonSpacing;  // Increase Y to move to the next row
+                }
+            }
+        }
+
+
+        private Image LoadDiceImage(string diceName)
+            {
+                // Format the image name (e.g., "d4.png" becomes "Resources.Images.d4.png")
+                string resourcePath = $"Probality_calc.Resources.{diceName.ToUpper()}.png"; // Adjust namespace
+
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            using (Stream stream = assembly.GetManifestResourceStream(resourcePath))
+            {
+                if (stream != null)
+                {
+                    return Image.FromStream(stream);
+                }
+                else
+                {
+                    // If image not found, load a default placeholder image instead
+                    return Properties.Resources.Custom; // Add a default image to your resources
+                }
+            }
+        }
+
+
+
+}
+
+
+
+
+
+
 }

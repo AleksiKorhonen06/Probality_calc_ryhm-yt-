@@ -1,93 +1,221 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Probality_calc
 {
     internal class Logic
     {
-        public float SameNumInSuccession(List<int> WantedNums)
+        private List<int> GetWantedNums()
         {
-            if (DiceStorage.diceList.Count == 0) return 0f;
+            List<int> WantedNums = new List<int>() { 8, 9 }; //testaukseen. Poistaa, jos  tarve
+            return WantedNums;
+        }
 
-            // Step 1: Find numbers that exist in all dice
-            HashSet<int> commonNumbers = new HashSet<int>(WantedNums);
+        public string SameNumInSuccession() // sotkusta, mut toimii.
+        {
+            List<int> wntdnums = GetWantedNums();
+            List<List<int>> valuelist = new List<List<int>>();
+            List<int> sides = new List<int>();
+            List<int> allvalues = new List<int>();
+            List<int> validnums = new List<int>();
+            List<float> all_fractions = new List<float>();
+
+            int num_of_wntdnums = wntdnums.Count;
+
+            if (DiceStorage.diceList.Count == 0) return "There exists no dice.";
+
             foreach (var dice in DiceStorage.diceList)
             {
-                commonNumbers.IntersectWith(dice.Values);
+                valuelist.Add(dice.Values);
+                sides.Add(dice.Sides);
             }
 
-            if (commonNumbers.Count == 0) return 0f; // No common numbers
-
-            // Step 2: Count occurrences per die, ensuring we track each roll separately
-            int WantedOutcomes = 0;
-            int TotalOutcomes = 1;
-
-            foreach (var dice in DiceStorage.diceList)
+            foreach (var list in valuelist)
             {
-                int countInDice = dice.Values.Count(v => commonNumbers.Contains(v));
-                WantedOutcomes += countInDice;
-                TotalOutcomes *= dice.Values.Count; // Each die contributes to the total possibilities
+                allvalues.AddRange(list);
             }
 
-            if (TotalOutcomes == 0) return 0f;
+            int totalOutcomes = allvalues.Count;
 
-            return ((float)WantedOutcomes / TotalOutcomes) * 100;
-        }
-
-        public float SumLessThan(int WantedNum)
-        {
-            if (DiceStorage.diceList.Count == 0) return 0f;
-
-            List<List<int>> allValues = DiceStorage.diceList.Select(d => d.Values).ToList();
-            List<int> possibleSums = GetAllSums(allValues);
-
-            int validSums = possibleSums.Count(sum => sum < WantedNum);
-            int totalSums = possibleSums.Count;
-
-            if (totalSums == 0 || validSums == 0) return 0f;
-
-            return ((float)validSums / totalSums) * 100;
-        }
-
-        public float SumMoreThan(int WantedNum)
-        {
-            if (DiceStorage.diceList.Count == 0) return 0f;
-
-            List<List<int>> allValues = DiceStorage.diceList.Select(d => d.Values).ToList();
-            List<int> possibleSums = GetAllSums(allValues);
-
-            int validSums = possibleSums.Count(sum => sum > WantedNum);
-            int totalSums = possibleSums.Count;
-
-            if (totalSums == 0 || validSums == 0) return 0f;
-
-            return ((float)validSums / totalSums) * 100;
-        }
-
-        // "Auttaja" method. Menee SumLessThan tai SumMoreThan.
-        private List<int> GetAllSums(List<List<int>> values)
-        {
-            List<int> result = new List<int> { 0 };
-
-            foreach (var diceValues in values)
+            for (int i = 0; i < num_of_wntdnums; i++)
             {
-                List<int> newSums = new List<int>();
+                int check_num = wntdnums[i];
 
-                foreach (int existingSum in result)
+                if (valuelist.All(list => list.Contains(check_num)))
                 {
-                    foreach (int diceValue in diceValues)
-                    {
-                        newSums.Add(existingSum + diceValue);
-                    }
+                    validnums.Add(check_num);
+                }
+            }
+
+            foreach (var list in valuelist)
+            {
+                int o = 0;
+                int s = list.Count;
+                foreach (var num in list)
+                {
+                    if (validnums.Contains(num)) { o += 1; }
+                }
+                all_fractions.Add((float)o / s);
+            }
+
+            float P = 1;
+
+            foreach (float num in all_fractions)
+            {
+                P *= num;
+            }
+
+            string WantedNumsForAns = string.Join(" or ", wntdnums);
+            string ans = $"Probability of all dice rolling {WantedNumsForAns} in succession is {P * 100}%";
+
+            return ans;
+        }
+
+        // SumExactly, SumLessThan ja SumMoreThan on vaan copy paste. En jaksa alkaa purkamaan pienemmäks.
+        public string SumExactly(int WantedNum)
+        {
+            if (DiceStorage.diceList.Count == 0) return "There exists no dice.";
+
+            List<List<int>> AllLists = DiceStorage.diceList.Select(d => d.Values).ToList();
+            List<int> allsides = new List<int>();
+
+            List<int> possibleSums = new List<int>();
+
+            void FindSums(int index, int currentSum)
+            {
+                if (index == AllLists.Count)
+                {
+                    possibleSums.Add(currentSum);
+                    return;
                 }
 
-                result = newSums;
+                foreach (int num in AllLists[index])
+                {
+                    FindSums(index + 1, currentSum + num);
+                }
             }
 
-            return result;
+            FindSums(0, 0); // alotuskohdat
+
+            int TotalOutcomes = possibleSums.Count;
+            int WantedOutcomes = 0;
+            List<int> LegitSums = new List<int>();
+
+            foreach (int num in possibleSums)
+            {
+                if (num == WantedNum)
+                {
+                    LegitSums.Add(num);
+                    WantedOutcomes++;
+                }
+            }
+
+            int NumOfLegitSums = LegitSums.Count;
+
+            float P = (float)WantedOutcomes / TotalOutcomes * 100;
+
+            string ans = $"Probability of getting sum exactly {WantedNum} from dice is {P}%\n\nThere are {NumOfLegitSums} sums that meet the condition.\n\nThere are {TotalOutcomes} scenarios in total.";
+
+            return ans;
+        }
+        public string SumLessThan(int WantedNum)
+        {
+            if (DiceStorage.diceList.Count == 0) return "There exists no dice.";
+            if (DiceStorage.diceList.Count >= WantedNum) return "You have too many dice. The probability is 0%";
+
+            List<List<int>> AllLists = DiceStorage.diceList.Select(d => d.Values).ToList();
+            List<int> allsides = new List<int>();
+
+            List<int> possibleSums = new List<int>();
+
+            void FindSums(int index, int currentSum)
+            {
+                if (index == AllLists.Count)
+                {
+                    possibleSums.Add(currentSum);
+                    return;
+                }
+
+                foreach (int num in AllLists[index])
+                {
+                    FindSums(index + 1, currentSum + num);
+                }
+            }
+
+            FindSums(0, 0); // alotuskohdat
+
+            int TotalOutcomes = possibleSums.Count;
+            int WantedOutcomes = 0;
+            List<int> LegitSums = new List<int>();
+
+            foreach (int num in possibleSums)
+            {
+                if (num < WantedNum)
+                {
+                    LegitSums.Add(num);
+                    WantedOutcomes++;
+                }
+            }
+
+            int NumOfLegitSums = LegitSums.Count;
+
+            float P = (float)WantedOutcomes / TotalOutcomes * 100;
+
+            string ans = $"Probability of getting sum less than{WantedNum} from dice is {P}%\n\nThere are {NumOfLegitSums} sums that meet the condition.\n\nThere are {TotalOutcomes} scenarios in total.";
+
+            return ans;
+        }
+
+        public string SumMoreThan(int WantedNum)
+        {
+            if (DiceStorage.diceList.Count == 0) return "There exists no dice.";
+
+            List<List<int>> AllLists = DiceStorage.diceList.Select(d => d.Values).ToList();
+            List<int> allsides = new List<int>();
+
+            List<int> possibleSums = new List<int>();
+
+            void FindSums(int index, int currentSum)
+            {
+                if (index == AllLists.Count)
+                {
+                    possibleSums.Add(currentSum);
+                    return;
+                }
+
+                foreach (int num in AllLists[index])
+                {
+                    FindSums(index + 1, currentSum + num);
+                }
+            }
+
+            FindSums(0, 0); // alotuskohdat
+
+            int TotalOutcomes = possibleSums.Count;
+            int WantedOutcomes = 0;
+            List<int> LegitSums = new List<int>();
+
+            foreach (int num in possibleSums)
+            {
+                if (num > WantedNum)
+                {
+                    LegitSums.Add(num);
+                    WantedOutcomes++;
+                }
+            }
+
+            int NumOfLegitSums = LegitSums.Count;
+
+            float P = (float)WantedOutcomes / TotalOutcomes * 100;
+
+            string ans = $"Probability of getting sum more than{WantedNum} from dice is {P}%\n\nThere are {NumOfLegitSums} sums that meet the condition.\n\nThere are {TotalOutcomes} scenarios in total.";
+
+            return ans;
         }
     }
 }

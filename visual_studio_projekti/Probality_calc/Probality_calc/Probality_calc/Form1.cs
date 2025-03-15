@@ -231,9 +231,9 @@ namespace Probality_calc
         private void Calculate_Click(object sender, EventArgs e)
         {
             Logic logic = new Logic();
-            //List<int> testi = new List<int>() {1,2};
-            AnsInfo.Text += logic.SumLessThan(90).ToString();
-            //AnsInfo.Text += logic.SameNumInSuccession(testi);
+
+            AnsInfo.Text += logic.SumLessThan(90);
+
         }
 
 

@@ -402,8 +402,31 @@ namespace Probality_calc
         private void Roll_Click(object sender, EventArgs e)
         {
             RollDice rollDice = new RollDice();
-            var testi = rollDice.RollLessThan();
-            AnsInfo.Text += testi;
+            if (selectedOperation == "SumLessThan")
+            {
+                string result = rollDice.RollLessThan();
+                AnsInfo.Text += result;
+            }
+            else if (selectedOperation == "SumMoreThan")
+            {
+                string result = rollDice.RollMoreThan();
+                AnsInfo.Text += result;
+            }
+            else if (selectedOperation == "SameNum")
+            {
+                string result = rollDice.RollSuccession();
+                AnsInfo.Text += result;
+            }
+            else if (selectedOperation == "SumExactly")
+            {
+                string result = rollDice.RollSumExactly();
+                AnsInfo.Text += result;
+            }
+            else
+            {
+                AnsInfo.Text += "No operation selected!\n";
+            }
+
         }
 
 
@@ -447,10 +470,6 @@ namespace Probality_calc
         }
 
 
-        public class DiceList
-        {
-            public List<Dice> Dice { get; set; }
-        }
 
         public class JsonLoader
         {
@@ -460,15 +479,56 @@ namespace Probality_calc
                 string filePath = Path.Combine(Application.StartupPath, "Dice.json");
 
                 // Read the JSON file content
-                string json = File.ReadAllText("../../Dice.json");
+                //     string json = File.ReadAllText("../../Dice.json");
+                try
+                {
+                    string json = File.ReadAllText(filePath);
+                    if (string.IsNullOrEmpty(json))
+                    {
+                        return GenerateJson();
 
-                // Deserialize the JSON to the DiceList object
-                var diceList = JsonConvert.DeserializeObject<DiceList>(json);
 
-                // Return the list of dice
-                return diceList.Dice;  // Access the Dice list from DiceList class              // en kyl ymmärrä onks tää joku chatgpt koodi vai vaan bandaid fix -LJ
+
+                    }
+                    else
+                    {
+                        return JsonConvert.DeserializeObject<List<Dice>>(json);
+                    }
+                }
+                catch
+                {
+                    return GenerateJson();
+                }
+
+
+                // debug for filepath MessageBox.Show(filePath);
+                // debug for json   MessageBox.Show(json);
+
+                
             }
 
+            static List<Dice> GenerateJson()
+            {
+                // default settings for json file are set here
+                Dice d2 = new Dice("D2", 2, new List<int>());
+                Dice d4 = new Dice("D4", 4, new List<int>());
+                Dice d6 = new Dice("D6", 6, new List<int>());
+                Dice d10 = new Dice("D10", 10, new List<int>());
+                Dice d12 = new Dice("D12", 12, new List<int>());
+                Dice d20 = new Dice("D20", 20, new List<int>());
+
+                var list = new List<Dice>
+                    {
+                        d2,
+                        d4,
+                        d6,
+                        d10,
+                        d12,
+                        d20
+                    };
+                SaveFile(list);
+                return list;
+            }
             public static bool SaveFile(List<Dice> dice)
             {
                 string filePath = Path.Combine(Application.StartupPath, "Dice.json");
@@ -500,6 +560,154 @@ namespace Probality_calc
         }
 
 
+        private void CustomDicePage(object sender, EventArgs e)
+        {
+            Form settingsForm = new Form
+            {
+                Text = "Custom Dice",
+                Size = new Size(500, 300),
+                StartPosition = FormStartPosition.CenterParent,
+                FormBorderStyle = FormBorderStyle.FixedDialog,
+                MaximizeBox = false,
+                MinimizeBox = false
+            };
+
+            Panel settingsPanel = new Panel
+            {
+                Dock = DockStyle.Fill,
+                BackColor = Color.FromArgb(220, 220, 220), // Light gray
+                BorderStyle = BorderStyle.FixedSingle
+            };
+
+            Label placeholderLabel = new Label
+            {
+                Text = "Custom Dice",
+                AutoSize = true,
+                Font = new Font("Arial", 12, FontStyle.Bold),
+                Location = new Point(20, 20)
+            };
+
+          
+          
+
+
+            Label NameBox = new Label
+            {
+                Text = "Name:",
+                Size = new Size(120, 50),
+                Location = new Point(50, 50)
+            };
+
+            TextBox NameBoxWriteIn = new TextBox
+            {
+
+                Text = "",
+                Size = new Size(120, 50),
+                Location = new Point(170, 50)
+            };
+
+            Label SideAmount = new Label
+            {
+                Text = "Amount of sides:",
+                Size = new Size(120, 50),
+                Location = new Point(50, 130)
+            };
+
+            TextBox SideAmountWriteIn = new TextBox
+            {
+
+                Text = "",
+                Size = new Size(120, 50),
+                Location = new Point(170, 130)
+            };
+
+            Label ListValues = new Label
+            {
+                Text = "List of values:",
+                Size = new Size(120, 50),
+                Location = new Point(50, 200)
+            };
+
+            TextBox ListValuesWriteIn = new TextBox
+            {
+                ReadOnly = true,
+                Text = "WIP, please use a text editor on the json file to utilize this feature.",
+                Size = new Size(300, 50),
+                Location = new Point(170, 200)
+            };
+
+
+           
+
+            Button cancelButton = new Button
+            {
+                Text = "Cancel",
+                Size = new Size(80, 30),
+                Location = new Point(380, 220)
+            };
+            cancelButton.Click += Cancel;
+            cancelButton.Click += (s, ev) => settingsForm.Close();
+
+            Button applyButton = new Button
+            {
+                Text = "Save",
+                Size = new Size(80, 30),
+                Location = new Point(300, 220)
+            };
+            applyButton.Click += SaveDice;
+
+
+            settingsPanel.Controls.Add(NameBox);
+            settingsPanel.Controls.Add(NameBoxWriteIn);
+            settingsPanel.Controls.Add(SideAmount);
+            settingsPanel.Controls.Add(SideAmountWriteIn);
+            settingsPanel.Controls.Add(ListValues);
+            settingsPanel.Controls.Add(ListValuesWriteIn);
+
+            // Add controls to the panel
+            settingsPanel.Controls.Add(placeholderLabel);
+            settingsPanel.Controls.Add(applyButton);
+            settingsPanel.Controls.Add(cancelButton);
+            settingsForm.Controls.Add(settingsPanel);
+
+            settingsForm.ShowDialog(); // Opens as a modal window
+
+            void SaveDice(object send, EventArgs eve)
+            {
+                var nimi = NameBoxWriteIn.Text;
+                var sides = SideAmountWriteIn.Text;
+                int actualsides = 0;
+                int.TryParse(sides, out actualsides);
+
+                if (actualsides != 0 && !string.IsNullOrEmpty(nimi))
+                {
+                    // tähän sit logiikka linq/lista foreach että se ottaa jokasen valuen ja tallentaa jsonii
+                    Dice dice = new Dice(nimi, actualsides, new List<int>());
+                    LoadedDice.diceList.Add(dice);
+                    JsonLoader.SaveFile(LoadedDice.diceList);
+                    NameBoxWriteIn.Text = "";
+                    SideAmountWriteIn.Text = "";
+                    actualsides = 0;
+                    MessageBox.Show(nimi + "Dice saved!");
+                    InitializeObservableButtons();
+                }
+                else
+                {
+                    MessageBox.Show("Failed to save custom die, check fields.");
+                }
+                
+            }
+
+            void Cancel(object cancelsender, EventArgs cancele)
+            {
+                NameBoxWriteIn.Text = "";
+                SideAmountWriteIn.Text = "";
+            }
+        }
+
+        
+
+        
 
 
         private void InitializeObservableButtons()
@@ -565,8 +773,7 @@ namespace Probality_calc
         }
 
 
-
-}
+    }
 
 
 

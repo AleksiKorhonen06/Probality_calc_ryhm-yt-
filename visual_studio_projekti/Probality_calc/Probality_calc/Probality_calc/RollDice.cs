@@ -132,5 +132,41 @@ public class RollDice
         return ans;
     }
 
+    public string RollSumExactly()
+    {
+        List<int> nums = GetWantedNums();
+        int targetnum = nums[0]; // Ottaa ensimmäisen numeron GetWantedNums:sta
+        var rand = new Random();
+        int sum = 0;
+        string ans = $"Rolling less than {targetnum}...\n";
 
+        List<List<int>> valuelist = new List<List<int>>();
+        List<int> allvalues = new List<int>();
+        List<int> selectedNums = new List<int>();
+
+        foreach (var dice in DiceStorage.diceList)
+        {
+            valuelist.Add(dice.Values);
+        }
+
+        foreach (var list in valuelist)
+        {
+            if (list.Count > 0)
+            {
+                int randomNumber = list[rand.Next(list.Count)];
+                selectedNums.Add(randomNumber);
+            }
+        }
+
+        foreach (int num in selectedNums)
+        {
+            ans += $"You rolled {num}.\n";
+            sum += num;
+        }
+
+        if (sum == targetnum) { ans += $"The sum of numbers rolled is {sum}\nSum {sum} is the same as wanted sum. You win!\n"; }
+        else { ans += $"The sum of numbers rolled is {sum}\nThe sum {sum} is not same as wanted sum. You lose!\n"; }
+
+        return ans;
+    }
 }

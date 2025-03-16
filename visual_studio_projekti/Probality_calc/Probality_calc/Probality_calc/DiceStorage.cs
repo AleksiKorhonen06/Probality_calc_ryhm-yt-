@@ -12,11 +12,5 @@ namespace Probality_calc
     }
 
 
-
-    // tää on mitkä nopat on json tiedostossa/luotu ja ladattu eli ne jotka on siinä vasemmalla puolella valittavissa. älä sekoita tohon ylempään
-    internal static class LoadedDice
-    {
-        public static List<Dice> diceList = new List<Dice>();
-    }
 }
 

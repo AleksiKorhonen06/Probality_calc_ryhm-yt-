@@ -79,7 +79,7 @@ namespace Probality_calc
         // SumExactly, SumLessThan ja SumMoreThan on vaan copy paste. En jaksa alkaa purkamaan pienemmäks.
         public string SumExactly(int WantedNum)
         {
-            if (DiceStorage.diceList.Count == 0) return "There exists no dice.";
+           if (DiceStorage.diceList.Count == 0) return "There exists no dice.";
 
             List<List<int>> AllLists = DiceStorage.diceList.Select(d => d.Values).ToList();
             List<int> allsides = new List<int>();

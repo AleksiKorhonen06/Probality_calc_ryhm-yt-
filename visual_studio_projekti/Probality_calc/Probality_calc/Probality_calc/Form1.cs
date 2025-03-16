@@ -103,11 +103,13 @@ namespace Probality_calc
             infoBox.Controls.Add(nameLabel);
             infoButton.BringToFront();  // Ensure the button is clickable
 
+            Dice die = LoadedDice.diceList.Find((Dice x) => x.Name == clickedButton.Name);
+            DiceStorage.diceList.Add(die);
         }
 
 
 
-        private static readonly Dictionary<string, int> DiceSides = new Dictionary<string, int>
+        /*private static readonly Dictionary<string, int> DiceSides = new Dictionary<string, int>
 {
     { "D4", 4 },
     { "D6", 6 },
@@ -115,13 +117,13 @@ namespace Probality_calc
     { "D10", 10 },
     { "D12", 12 },
     { "D20", 20 },
-};
-
+}; */
 
         private void OpenSettingsForm(string diceName)
         {
 
-            int numberOfSides = DiceSides[diceName];
+            //int numberOfSides = DiceSides[diceName];
+            int numberOfSides = LoadedDice.diceList.Find((Dice x) => x.Name == diceName).Sides;
 
             // Create the settings form
             Form settingsForm = new Form
@@ -201,6 +203,7 @@ namespace Probality_calc
         private void Clear_Click(object sender, EventArgs e)
         {
             DiceStorage.diceList.Clear();
+            AnsInfo.Text = "";
             // Create a list to hold panels to be removed
             List<Control> controlsToRemove = new List<Control>();
 
@@ -366,7 +369,7 @@ namespace Probality_calc
                 Clicked?.Invoke(sender, e);  // Pass both parameters
             }
         }
-
+        /*  Miksi vitus tääl on random public class Dice kun meillä oli se jo tuol jsonSerializer classissa ?? - LJ
         public class Dice
         {
             public string Name { get; set; }
@@ -377,8 +380,9 @@ namespace Probality_calc
                 Name = name;
                 Sides = sides;
             }
-        }
+        } */
 
+        // tää on mitkä nopat on json tiedostossa/luotu ja ladattu eli ne jotka on siinä vasemmalla puolella valittavissa. älä sekoita DiceStorageen
         public class LoadedDice
         {
             public static List<Dice> diceList { get; set; }
@@ -404,7 +408,22 @@ namespace Probality_calc
                 var diceList = JsonConvert.DeserializeObject<DiceList>(json);
 
                 // Return the list of dice
-                return diceList.Dice;  // Access the Dice list from DiceList class
+                return diceList.Dice;  // Access the Dice list from DiceList class              // en kyl ymmärrä onks tää joku chatgpt koodi vai vaan bandaid fix -LJ
+            }
+
+            public static bool SaveFile(List<Dice> dice)
+            {
+                string filePath = Path.Combine(Application.StartupPath, "Dice.json");
+                try
+                {
+                    string JsonOutput = JsonConvert.SerializeObject(dice);
+                    File.WriteAllText(filePath, JsonOutput);
+                    return true;
+                }
+                catch
+                {
+                    return false;
+                }
             }
         }
 
@@ -418,6 +437,7 @@ namespace Probality_calc
             if (selectedDice != null)
             {
                 MessageBox.Show($"You selected {selectedDice.Name} with {selectedDice.Sides} sides.");
+       //         DiceStorage.diceList.Add(selectedDice);
             }
         }
 
@@ -445,7 +465,8 @@ namespace Probality_calc
                     Font = new Font("Arial", 10, FontStyle.Bold),  // Set font style
                     BackColor = Color.LightGray,  // Set background color
                     BackgroundImage = diceImage,  // Set the image as the background
-                    BackgroundImageLayout = ImageLayout.Stretch  // Stretch the image to fit the button size
+                    BackgroundImageLayout = ImageLayout.Stretch,  // Stretch the image to fit the button size
+
                 };
 
                 // Attach the click event to trigger AddInfoBox_Click when the button is clicked

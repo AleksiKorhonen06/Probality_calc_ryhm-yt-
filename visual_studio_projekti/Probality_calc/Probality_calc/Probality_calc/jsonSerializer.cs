@@ -9,6 +9,9 @@ using System.Text.Json;
 
 namespace Probality_calc
 {
+
+    /* Ei enää käytetä, kun vaihdettiin Newtonsoft Jsoniin.
+
     internal static class JsonLoader
     {
         private static string filePath = "dice.json"; // nimi voi muuttaa
@@ -47,8 +50,8 @@ namespace Probality_calc
                 return false;
             }
         }
-    }
-    internal class Dice
+    } */
+    public class Dice
     {
         public string Name { get; set; }
         public int Sides { get; set; }
@@ -64,11 +67,11 @@ namespace Probality_calc
             } }
 
 
-        public Dice(string name, int sides)
+        public Dice(string name, int sides, List<int> values)
         {
             Name = name;
             Sides = sides;
-            Values = new List<int>();
+            Values = values;
 
             if (Values == null || Values.Count == 0)
             {
@@ -83,7 +86,7 @@ namespace Probality_calc
 
     public class AddCustomDice
     {
-        string filename = "dice.json"; //Tarvii ehkä paremman polun
+        string filename = "Dice.json"; //Tarvii ehkä paremman polun
 
         //jotain jotain
         //json:ssa jo valmiina muutamat nopat (d2, d6...)

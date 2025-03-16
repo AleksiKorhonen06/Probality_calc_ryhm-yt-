@@ -344,7 +344,7 @@ namespace Probality_calc
         private void Roll_Click(object sender, EventArgs e)
         {
             RollDice rollDice = new RollDice();
-            var testi = rollDice.RollMoreThan().ToString();
+            var testi = rollDice.RollLessThan();
             AnsInfo.Text += testi;
         }
 

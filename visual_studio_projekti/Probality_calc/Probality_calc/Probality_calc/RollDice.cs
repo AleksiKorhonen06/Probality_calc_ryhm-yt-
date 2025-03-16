@@ -1,13 +1,15 @@
 ﻿using Probality_calc;
 using System.Collections.Generic;
 using System;
+using System.Linq;
+using System.Collections;
 
 public class RollDice
 {
     private List<int> GetWantedNums()
     {
         // Customize as needed
-        return new List<int> { 1, 2 };
+        return new List<int> { 6, 1 };
     }
 
     private List<int> GetWantedNum()
@@ -20,85 +22,112 @@ public class RollDice
     {
         List<int> nums = GetWantedNums();
         var rand = new Random();
-        string ans = "";
+        string anspart1 = string.Join(", ", nums);
+        string ans = $"Rolling in succession...\nWanted numbers are: {anspart1}\n";
+        
+        List<List<int>> valuelist = new List<List<int>>();
+        List<int> allvalues = new List<int>();
+        List<int> selectedNums = new List<int>();
 
         foreach (var dice in DiceStorage.diceList)
         {
-            // Roll between 1 and MaxValue (inclusive)
-            int Randnum = rand.Next(1, dice.MaxValue + 1);
+            valuelist.Add(dice.Values);
+        }
 
-            if (!nums.Contains(Randnum))
+        foreach (var list in valuelist)
+        {
+            if (list.Count > 0)
             {
-                ans += $"{dice.Name} rolled {Randnum} \nIt was not in wanted numbers. \n";
-            }
-            else
-            {
-                nums.Clear();  // Reset list
-                nums.Add(Randnum);  // Add the rolled number
-                ans += $"{dice.Name} rolled {Randnum} \nIt was in the wanted numbers. \n";
+                int randomNumber = list[rand.Next(list.Count)];
+                selectedNums.Add(randomNumber);
             }
         }
+
+        foreach (int num in selectedNums) 
+        {
+            ans += $"You rolled {num}.\n";
+        }
+        bool containsAny = nums.Intersect(selectedNums).Any();
+        bool allSame = selectedNums.Distinct().Count() == 1;
+
+        if (allSame && containsAny) ans += "All numbers where the same and in wanted numbers. You win!\n";
+        else { ans += "All numbers where not the same. You lose!\n"; }
+
         return ans;
     }
 
     public string RollMoreThan()
     {
-        List<int> numlist = GetWantedNum();
-        int wanted_num = numlist[0];
-        int sum = 0;
-        int index = 0;
-        int max_amount = DiceStorage.diceList.Count;
+        List<int> nums = GetWantedNums();
+        int targetnum = nums[0]; // Ottaa ensimmäisen numeron GetWantedNums:sta
         var rand = new Random();
-        string ans = "";
+        int sum = 0;
+        string ans = $"Rolling more than {targetnum}...\n";
+
+        List<List<int>> valuelist = new List<List<int>>();
+        List<int> allvalues = new List<int>();
+        List<int> selectedNums = new List<int>();
 
         foreach (var dice in DiceStorage.diceList)
         {
-            // Roll between 1 and MaxValue (inclusive)
-            int Randnum = rand.Next(1, dice.MaxValue + 1);
-            ans += $"{dice.Name} rolled {Randnum}\n";
-            sum += Randnum;
-            index++;
+            valuelist.Add(dice.Values);
         }
 
-        if (sum < wanted_num && index == max_amount)
+        foreach (var list in valuelist)
         {
-            ans += $"The wanted sum was {wanted_num} or more.\nThe sum got was {sum}!\nYou Lost!";
+            if (list.Count > 0)
+            {
+                int randomNumber = list[rand.Next(list.Count)];
+                selectedNums.Add(randomNumber);
+            }
         }
-        else
+
+        foreach (int num in selectedNums)
         {
-            ans += $"The wanted sum was {wanted_num} or more.\nThe sum got was {sum}!\nYou Won!";
+            ans += $"You rolled {num}.\n";
+            sum += num;
         }
+        
+        if (sum > targetnum) { ans += $"The sum of numbers rolled is {sum}\n{sum} is larger than {targetnum}. You win!\n"; }
+        else { ans += $"The sum of numbers rolled is {sum}\n{sum} is not larger than {targetnum}. You lose!\n"; }
 
         return ans;
     }
 
     public string RollLessThan()
     {
-        List<int> numlist = GetWantedNum();
-        int wanted_num = numlist[0];
-        int sum = 0;
-        int index = 0;
-        int max_amount = DiceStorage.diceList.Count;
+        List<int> nums = GetWantedNums();
+        int targetnum = nums[0]; // Ottaa ensimmäisen numeron GetWantedNums:sta
         var rand = new Random();
-        string ans = "";
+        int sum = 0;
+        string ans = $"Rolling less than {targetnum}...\n";
+
+        List<List<int>> valuelist = new List<List<int>>();
+        List<int> allvalues = new List<int>();
+        List<int> selectedNums = new List<int>();
 
         foreach (var dice in DiceStorage.diceList)
         {
-            // Roll between 1 and MaxValue (inclusive)
-            int Randnum = rand.Next(1, dice.MaxValue + 1);
-            ans += $"{dice.Name} rolled {Randnum}\n";
-            sum += Randnum;
-            index++;
+            valuelist.Add(dice.Values);
         }
 
-        if (sum > wanted_num && index == max_amount)
+        foreach (var list in valuelist)
         {
-            ans += $"The wanted sum was less than {wanted_num}!\nThe sum got was {sum}!\nYou Lost!";
+            if (list.Count > 0)
+            {
+                int randomNumber = list[rand.Next(list.Count)];
+                selectedNums.Add(randomNumber);
+            }
         }
-        else
+
+        foreach (int num in selectedNums)
         {
-            ans += $"The wanted sum was less than {wanted_num}!\nThe sum got was {sum}!\nYou Won!";
+            ans += $"You rolled {num}.\n";
+            sum += num;
         }
+
+        if (sum < targetnum) { ans += $"The sum of numbers rolled is {sum}\n{sum} is less than {targetnum}. You win!\n"; }
+        else { ans += $"The sum of numbers rolled is {sum}\n{sum} is not less than {targetnum}. You lose!\n"; }
 
         return ans;
     }

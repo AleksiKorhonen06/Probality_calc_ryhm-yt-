@@ -375,12 +375,12 @@ namespace Probality_calc
 
             if (selectedOperation == "SumLessThan")
             {
-                string result = logic.SumLessThan(5);
+                string result = logic.SumLessThan();
                 AnsInfo.Text += result;
             }
             else if (selectedOperation == "SumMoreThan")
             {
-                string result = logic.SumMoreThan(5);
+                string result = logic.SumMoreThan();
                 AnsInfo.Text += result;
             }
             else if (selectedOperation == "SameNum")
@@ -390,7 +390,7 @@ namespace Probality_calc
             }
             else if (selectedOperation == "SumExactly")
             {
-                string result = logic.SumExactly(5);
+                string result = logic.SumExactly();
                 AnsInfo.Text += result;
             }
             else
@@ -772,7 +772,40 @@ namespace Probality_calc
             }
         }
 
+        private void WantedNumButton_Click(object sender, EventArgs e)
+        {
+            Form inputForm = new Form();
+            inputForm.Text = "Input Numbers";
+            inputForm.Size = new System.Drawing.Size(300, 200); //ikkunaa
 
+            TextBox inputTextBox = new TextBox();
+            inputTextBox.Location = new System.Drawing.Point(20, 20);
+            inputTextBox.Size = new System.Drawing.Size(200, 20); //ikkunaa
+            inputForm.Controls.Add(inputTextBox);
+
+            Button applyButton = new Button();
+            applyButton.Text = "Apply";
+            applyButton.Location = new System.Drawing.Point(20, 60);
+            applyButton.Size = new System.Drawing.Size(75, 30);
+            applyButton.Click += (s, ev) =>
+            {
+                GlobalString.UserInput = inputTextBox.Text;
+                inputForm.Close();
+            };
+
+            inputForm.Controls.Add(applyButton);
+
+            Button clearButton = new Button();
+            clearButton.Text = "Clear";
+            clearButton.Location = new System.Drawing.Point(120, 60);
+            clearButton.Size = new System.Drawing.Size(75, 30);
+            clearButton.Click += (s, ev) =>
+            {
+                inputTextBox.Clear();
+            };
+            inputForm.Controls.Add(clearButton);
+            inputForm.ShowDialog();
+        }
     }
 
 

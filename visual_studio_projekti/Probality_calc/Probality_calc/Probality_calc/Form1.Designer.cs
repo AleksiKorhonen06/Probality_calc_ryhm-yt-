@@ -31,7 +31,7 @@
             this.AnsInfo = new System.Windows.Forms.Label();
             this.EventBoard = new System.Windows.Forms.Panel();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
+            this.WantedNumButton = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
             this.button6 = new System.Windows.Forms.Button();
@@ -64,7 +64,7 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.SystemColors.ControlDark;
-            this.panel3.Controls.Add(this.button1);
+            this.panel3.Controls.Add(this.WantedNumButton);
             this.panel3.Controls.Add(this.button2);
             this.panel3.Controls.Add(this.button4);
             this.panel3.Controls.Add(this.button6);
@@ -73,14 +73,15 @@
             this.panel3.Size = new System.Drawing.Size(181, 145);
             this.panel3.TabIndex = 9;
             // 
-            // button1
+            // WantedNumButton
             // 
-            this.button1.Location = new System.Drawing.Point(93, 72);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 59);
-            this.button1.TabIndex = 2;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
+            this.WantedNumButton.Location = new System.Drawing.Point(93, 72);
+            this.WantedNumButton.Name = "WantedNumButton";
+            this.WantedNumButton.Size = new System.Drawing.Size(75, 59);
+            this.WantedNumButton.TabIndex = 2;
+            this.WantedNumButton.Text = "Add wanted num";
+            this.WantedNumButton.UseVisualStyleBackColor = true;
+            this.WantedNumButton.Click += new System.EventHandler(this.WantedNumButton_Click);
             // 
             // button2
             // 
@@ -97,9 +98,8 @@
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 59);
             this.button4.TabIndex = 1;
-            this.button4.Text = "Custom Dice";
+            this.button4.Text = "custom";
             this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.CustomDicePage);
             // 
             // button6
             // 
@@ -192,7 +192,7 @@
         private System.Windows.Forms.Label AnsInfo;
         private System.Windows.Forms.Panel EventBoard;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button WantedNumButton;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button6;
@@ -202,6 +202,8 @@
         private System.Windows.Forms.Button Setting_Button;
         private System.Windows.Forms.Panel settingsPanel;
         private System.Windows.Forms.Panel dicePanel;
+
+
     }
 }
 

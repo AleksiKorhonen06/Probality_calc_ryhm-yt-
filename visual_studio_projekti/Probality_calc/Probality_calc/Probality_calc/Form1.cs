@@ -7,12 +7,14 @@ using System.Text.Json.Serialization;
 using System.Text.Json;
 using Newtonsoft.Json;
 using System.Reflection;
+using System.Security.Cryptography.X509Certificates;
 
 
 namespace Probality_calc
 {
     public partial class Form1 : Form
     {
+        
         private int panelOffsetX = 10; // This will track the starting position for the next panel horizontally
         private int panelOffsetY = 10; // Vertical offset for the next row
         private const int spaceBetweenPanels = 10; // Space between panels horizontally and vertically
@@ -22,6 +24,7 @@ namespace Probality_calc
             LoadedDice.diceList = JsonLoader.ReadFile();
             InitializeComponent();
             InitializeObservableButtons();
+
 
         }
 
@@ -229,18 +232,6 @@ namespace Probality_calc
         }
 
 
-
-
-        private void Calculate_Click(object sender, EventArgs e)
-        {
-            Logic logic = new Logic();
-
-            AnsInfo.Text += logic.SumLessThan(90);
-
-        }
-
-
-
         private void OpenSettingsForm()
         {
             Form settingsForm = new Form
@@ -291,7 +282,7 @@ namespace Probality_calc
                 Size = new Size(120, 50),
                 Location = new Point(50, 50)
             };
-            sameNumButton.Click += TestSettings_Click;
+            sameNumButton.Click += SameNum_Click;
 
             Button sumLessThanButton = new Button
             {
@@ -299,15 +290,23 @@ namespace Probality_calc
                 Size = new Size(120, 50),
                 Location = new Point(50, 100)
             };
-            sumLessThanButton.Click += TestSettings_Click;
+            sumLessThanButton.Click += sumLessThan_Click;
 
             Button sumMoreThanButton = new Button
             {
                 Text = "P of sum more than",
                 Size = new Size(120, 50),
-                Location = new Point(50, 150)
+                Location = new Point(180, 100)
             };
-            sumMoreThanButton.Click += TestSettings_Click;
+            sumMoreThanButton.Click += sumMoreThan_Click;
+
+            Button sumExactlyButton = new Button
+            {
+                Text = "P of sum exactly",
+                Size = new Size(120, 50),
+                Location = new Point(180, 50)
+            };
+            sumExactlyButton.Click += SumExactly_Click;
 
 
 
@@ -318,27 +317,86 @@ namespace Probality_calc
             settingsPanel.Controls.Add(sameNumButton);
             settingsPanel.Controls.Add(sumLessThanButton);
             settingsPanel.Controls.Add(sumMoreThanButton);
-
+            settingsPanel.Controls.Add(sumExactlyButton);
             settingsForm.Controls.Add(settingsPanel);
-
+           
             settingsForm.ShowDialog(); // Opens as a modal window
         }
 
-        // Apply button click event handler
-        private void ApplySettings_Click(object sender, EventArgs e)
+
+        private string selectedOperation = null; //ottaa stringin sisään ja sillä valitsee logiikan
+
+        private void ApplySettings_Click(object sender, EventArgs e) // ei tee mitään. pelkästään haluttua todennäkösyyttä painamalla homma toimii
         {
-            MessageBox.Show("Settings applied!");
+            //MessageBox.Show("Settings applied!");
         }
 
-        private void TestSettings_Click(object sender, EventArgs e)
+        private void sumLessThan_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Asetus vaihdettu testi");
-            
+            selectedOperation = "";
+            selectedOperation += "SumLessThan";
+            MessageBox.Show("Sum less than applied!");
+        }
+
+        private void sumMoreThan_Click(object sender, EventArgs e)
+        {
+            selectedOperation = "";
+            selectedOperation += "SumMoreThan";
+            MessageBox.Show("Sum more than applied!");
+        }
+
+        private void SameNum_Click(object sender, EventArgs e)
+        {
+            selectedOperation = "";
+            selectedOperation += "SameNum";
+            MessageBox.Show("Same number in succession applied!");
+        }
+
+        private void SumExactly_Click(object sender, EventArgs e)
+        {
+            selectedOperation = "";
+            selectedOperation += "SumExactly";
+            MessageBox.Show("Sum exactly applied!");
+        }
+
+        private void TestSettings_Click(object sender, EventArgs e) // ei tee mitään tarpeellista
+        {
+            //MessageBox.Show("Asetus vaihdettu testi");
         }
 
         private void Setting_Button_Click(object sender, EventArgs e)
         {
             OpenSettingsForm(); // This will open the settings in a new window
+        }
+
+        private void Calculate_Click(object sender, EventArgs e)
+        {
+            Logic logic = new Logic();
+
+            if (selectedOperation == "SumLessThan")
+            {
+                string result = logic.SumLessThan(5);
+                AnsInfo.Text += result;
+            }
+            else if (selectedOperation == "SumMoreThan")
+            {
+                string result = logic.SumMoreThan(5);
+                AnsInfo.Text += result;
+            }
+            else if (selectedOperation == "SameNum")
+            {
+                string result = logic.SameNumInSuccession();
+                AnsInfo.Text += result;
+            }
+            else if (selectedOperation == "SumExactly")
+            {
+                string result = logic.SumExactly(5);
+                AnsInfo.Text += result;
+            }
+            else
+            {
+                AnsInfo.Text += "No operation selected!\n";
+            }
         }
 
         private void Roll_Click(object sender, EventArgs e)

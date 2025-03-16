@@ -126,7 +126,6 @@ namespace Probality_calc
         public string SumLessThan(int WantedNum)
         {
             if (DiceStorage.diceList.Count == 0) return "There exists no dice.";
-            if (DiceStorage.diceList.Count >= WantedNum) return "You have too many dice. The probability is 0%";
 
             List<List<int>> AllLists = DiceStorage.diceList.Select(d => d.Values).ToList();
             List<int> allsides = new List<int>();
